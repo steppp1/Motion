@@ -7,6 +7,6 @@ RUN mvn clean package -DskipTests
 # 运行阶段：使用 JDK 运行打包后的 JAR
 FROM openjdk:17-jdk-slim
 WORKDIR /app
-COPY --from=builder /app/target/*.jar app.jar
+COPY --from=builder /target/*.jar app.jar
 EXPOSE 15000
 ENTRYPOINT ["java", "-jar", "app.jar"]

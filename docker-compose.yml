@@ -6,7 +6,7 @@ services:  # 定义服务，每个服务对应一个容器
   frontend:  
     build: ./frontend  # 当前目录下的 Dockerfile 用于构建前端镜像
     ports:
-      - "80:80"  # 将容器的 80 端口映射到主机的 80 端口
+      - "8080:80"  # 将容器的 80 端口映射到主机的 80 端口
     depends_on:
       - user-service  # 说明前端服务依赖 user-service
     networks:
