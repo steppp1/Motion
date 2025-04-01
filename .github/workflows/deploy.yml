@@ -24,7 +24,7 @@ jobs:
           chmod 600 ~/.ssh/ForGithub.pem
           ssh-keyscan -H $SERVER_IP >> ~/.ssh/known_hosts
           # 指定私钥登录
-          ssh -i ~/.ssh/ForGithub.pem $SERVER_USER@$SERVER_IP << 'EOF'
+          ssh $SERVER_USER@$SERVER_IP << 'EOF'
             cd ~/Motion
             git pull origin master
             docker compose down
