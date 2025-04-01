@@ -22,8 +22,8 @@ jobs:
           sudo apt-get update && sudo apt-get install -y ssh
           # 配置 SSH
           mkdir -p ~/.ssh/
-          echo "$PRIVATE_KEY" > ~/.ssh/id_rsa
-          chmod 600 ~/.ssh/id_rsa
+          echo "$PRIVATE_KEY" > ~/.ssh/ForGithub.pem
+          chmod 600 ~/.ssh/ForGithub.pem
           ssh-keyscan -H $SERVER_IP >> ~/.ssh/known_hosts
           # SSH 到服务器并执行更新
           ssh $SERVER_USER@$SERVER_IP << 'EOF'
