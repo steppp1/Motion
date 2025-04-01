@@ -18,15 +18,13 @@ jobs:
           SERVER_IP: ${{ secrets.SERVER_IP }}
           SERVER_USER: ${{ secrets.SERVER_USER }}
         run: |
-          # 安装 SSH 客户端
           sudo apt-get update && sudo apt-get install -y ssh
-          # 配置 SSH
           mkdir -p ~/.ssh/
           echo "$PRIVATE_KEY" > ~/.ssh/ForGithub.pem
           chmod 600 ~/.ssh/ForGithub.pem
           ssh-keyscan -H $SERVER_IP >> ~/.ssh/known_hosts
-          # SSH 到服务器并执行更新
-          ssh $SERVER_USER@$SERVER_IP << 'EOF'
+          # 指定私钥登录
+          ssh -i ~/.ssh/ForGithub.pem $SERVER_USER@$SERVER_IP << 'EOF'
             cd ~/Motion
             git pull origin master
             docker compose down
