@@ -1,0 +1,42 @@
+server:
+  port: 18000
+
+spring:
+  profiles:
+    active: dev
+  main:
+    allow-circular-references: true
+  datasource:
+    driver-class-name: ${hang.datasource.driver-class-name}
+    url: jdbc:mysql://${hang.datasource.host}:${hang.datasource.port}/${hang.datasource.database}?serverTimezone=Asia/Shanghai&useUnicode=true&characterEncoding=utf-8&zeroDateTimeBehavior=convertToNull&useSSL=false&allowPublicKeyRetrieval=true
+    username: ${hang.datasource.username}
+    password: ${hang.datasource.password}
+
+
+  #mybatis:
+  #  #mapper配置文件
+  #  mapper-locations: classpath:mapper/*.xml
+  #  type-aliases-package: org.steppp1.entity
+  #  configuration:
+  #  #开启驼峰命名
+  #    map-underscore-to-camel-case: true
+  mybatis-plus:
+    type-aliases-package: com.hang.motionuserservices.dal.entity;
+    mapper-locations: classpath:mapper/*.xml
+    configuration:
+      #开启驼峰命名
+      map-underscore-to-camel-case: true
+
+  logging:
+    level:
+      org:
+        steppp1:
+          mapper: debug
+          service: info
+          controller: info
+
+  steppp1:
+    jwt:
+      user-secret-key: steppp1
+      user-ttl: 72000000000000000
+      user-token-name: authentication

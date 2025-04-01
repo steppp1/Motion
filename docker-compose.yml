@@ -1,0 +1,59 @@
+version: '3'  # Docker Compose 配置版本
+
+services:  # 定义服务，每个服务对应一个容器
+
+  # 前端服务
+  frontend:  
+    build: ./frontend  # 当前目录下的 Dockerfile 用于构建前端镜像
+    ports:
+      - "80:80"  # 将容器的 80 端口映射到主机的 80 端口
+    depends_on:
+      - user-service  # 说明前端服务依赖 user-service
+    networks:
+      - app-network  # 定义连接的网络
+  
+  # 用户服务
+  user-service:  
+    build: ./user-service
+    ports:
+      - "15000:15000"  # 将容器的 15000 端口映射到主机的 15000 端口
+    depends_on:
+      - mysql
+    networks:
+      - app-network  # 定义连接的网络
+    restart: always  # 容器崩溃后自动重启
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:15000/health"]  # 假设有健康检查接口
+      interval: 30s
+      retries: 3
+      timeout: 10s
+    logging:
+      driver: "json-file"  # 配置容器日志驱动
+
+  # MySQL 数据库服务
+  mysql:  
+    image: mysql:8.0  # 使用 MySQL 5.7 镜像
+    environment:
+      MYSQL_ROOT_PASSWORD: root  # 设置 MySQL 的 root 用户密码
+      MYSQL_DATABASE: Motion  # 设置 MySQL 默认数据库名称
+    ports:
+      - "3306:3306"  # 将 MySQL 容器的 3306 端口映射到主机的 3306 端口
+    volumes:
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql  # 挂载初始化脚本
+    networks:
+      - app-network  # 定义连接的网络
+    restart: always  # 容器崩溃后自动重启
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]  # MySQL 健康检查
+      interval: 30s
+      retries: 3
+      timeout: 10s
+
+
+networks:
+  app-network:  # 定义应用程序的自定义网络，确保各个服务可以相互访问
+    driver: bridge  # 使用默认的桥接网络模式
+
+volumes:
+  mysql-data:  # MySQL 数据持久化卷
+    driver: local
