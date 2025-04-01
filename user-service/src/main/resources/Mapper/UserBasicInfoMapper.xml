@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hang.motionuserservices.dal.mysql.user.UserBasicInfoMapper">
+    <select id="registerCheck" resultType="com.hang.motionuserservices.dal.mysql.user.UserBasicInfoMapper">
+        select * from user_basic_info
+        <where>
+            <trim prefix="" suffix="" suffixOverrides="or">
+                <if test="username != null and username != ''">
+                    username = #{username} or
+                </if>
+                <if test="email != null and email != ''">
+                    email = #{email} or
+                </if>
+                <if test="phone != null and phone != ''">
+                    phone = #{phone}
+                </if>
+            </trim>
+        </where>
+    </select>
+</mapper>
