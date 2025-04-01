@@ -15,7 +15,7 @@ jobs:
 
     steps:
       - name: SSH 命令拉取代码
-        uses: appleboy/ssh-action@master
+        uses: appleboy/ssh-action@@v0.1.4
         with:
           host: ${{ secrets.SERVER_IP }}
           username: ${{ secrets.SERVER_USER }}
